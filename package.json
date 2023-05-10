@@ -16,6 +16,7 @@
     "tailwindcss": "^3.3.2"
   },
   "dependencies": {
-    "firebase": "^9.21.0"
+    "firebase": "^9.21.0",
+    "lottie-web": "^5.11.0"
   }
 }

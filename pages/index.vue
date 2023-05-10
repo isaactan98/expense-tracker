@@ -1,6 +1,7 @@
 <template>
     <div>
-        <NuxtWelcome />
+        <splash-screen v-show="splashLoading" />
+        <NuxtWelcome v-show="!splashLoading" />
     </div>
 </template>
 
@@ -11,7 +12,7 @@ import { getAnalytics } from "firebase/analytics";
 export default {
     layout: 'default',
     data: () => ({
-
+        splashLoading: true
     }),
     mounted() {
         const config = useRuntimeConfig()
@@ -29,6 +30,10 @@ export default {
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         console.info(analytics)
+
+        setTimeout(() => {
+            this.splashLoading = false
+        }, 3000);
     },
 }
 </script>
