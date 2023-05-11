@@ -1,6 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
+  app: {
+    head: {
+      title: "Expense Tracker",
+      link: [{ rel: "icon", type: "image/x-icon", href: "/icon.png" }],
+    },
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
