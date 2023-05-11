@@ -2,18 +2,18 @@
     <div class="min-h-screen container text-gray-500 dark:text-white">
         <div class="grid gap-3" v-if="user">
             <h1 class="font-bold text-3xl mx-5 pt-3">Profile</h1>
-            <div class="bg-slate-300 dark:bg-slate-800 grid grid-cols-3 gap-5 p-5">
-                <div class="">
-                    <img :src="user.photoURL" alt="" class="rounded-full w-28 h-28">
+            <div class="bg-slate-300 dark:bg-slate-800 grid grid-cols-3 gap-5 p-5 place-content-center">
+                <div class="w-28 h-28 justify-center items-center">
+                    <img :src="user.photoURL" alt="" class="rounded-full">
                 </div>
                 <div class="col-span-2">
                     <div class="">
-                        <label for="" class="text-gray-500 text-xs">First name</label>
-                        <h1 class="text-xl">Isaac</h1>
+                        <label for="" class="text-gray-500 text-xs">Display name</label>
+                        <h1 class="text-lg">{{ user.displayName }}</h1>
                     </div>
                     <div class="">
-                        <label for="" class="text-gray-500 text-xs">Last name</label>
-                        <h1 class="text-xl">Isaac</h1>
+                        <label for="" class="text-gray-500 text-xs">Email</label>
+                        <h1 class="text-lg">{{ user.email }}</h1>
                     </div>
                 </div>
             </div>
@@ -33,36 +33,40 @@
 </template>
 
 <script lang="ts">
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 export default {
     data: () => ({
-        user: null as any | null
+        user: null as any | null,
+        fb: null as any | null,
     }),
     mounted() {
-        firebase()
-        const auth = getAuth()
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // console.log(user)
-                this.user = user
-            } else {
-                // console.log('no user')
-                signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
-                    // console.log(result)
-                    this.user = result.user
-                }).catch((error) => {
-                    console.log(error)
-                });
-            }
-        });
+        this.fb = firebase()
+        const auth = this.fb.getAuth()
+
+        setTimeout(() => {
+            auth.onAuthStateChanged((user: any) => {
+                if (user) {
+                    // console.log(user)
+                    this.user = user
+                } else {
+                    // console.log('no user')
+                    signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
+                        console.log(result)
+                        this.user = result.user
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+                }
+            });
+        }, 3000);
     },
     methods: {
-        logout() {
-            const auth = getAuth()
-            auth.signOut().then(() => {
+        async logout() {
+            const auth = this.fb.getAuth()
+            await auth.signOut().then(() => {
                 console.log('logout')
                 window.location.href = '/'
-            }).catch((error) => {
+            }).catch((error: any) => {
                 console.log(error)
             });
         }
