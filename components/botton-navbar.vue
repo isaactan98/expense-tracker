@@ -3,9 +3,8 @@
         <div class="flex justify-around items-center bg-white dark:bg-gray-800 px-2 py-5 rounded-t-3xl shadow-lg">
             <div class="flex flex-col items-center justify-center">
                 <a href="/">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                        class="w-6 h-6 text-gray-200 dark:text-gray-500"
-                        :class="activeRoute === 'index' ? 'text-gray-200 dark:text-gray-200' : ''">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"
+                        :class="activeRoute == 'index' ? 'text-gray-800 dark:text-gray-200' : 'text-gray-200 dark:text-gray-500'">
                         <path
                             d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                         <path
@@ -36,9 +35,8 @@
             </div>
             <div class="flex flex-col items-center justify-center">
                 <a href="/profile">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                        class="w-6 h-6 text-gray-200 dark:text-gray-500"
-                        :class="activeRoute === 'profile' ? 'text-gray-200 dark:text-gray-200' : ''">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"
+                        :class="activeRoute == 'profile' ? 'text-gray-800 dark:text-gray-200' : 'text-gray-200 dark:text-gray-500'">
                         <path fill-rule="evenodd"
                             d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
                             clip-rule="evenodd" />
