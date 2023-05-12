@@ -1,5 +1,5 @@
 <template>
-    <div class="grid place-content-center min-h-screen relative bg-black">
+    <div class="grid place-content-center min-h-screen relative bg-white dark:bg-black">
         <div id="lottie" class=""></div>
     </div>
 </template>
