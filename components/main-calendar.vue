@@ -138,8 +138,12 @@ export default {
 
         const isCurrentDate = (date) => {
             const now = new Date()
-            console.warn("date {} , now {} ", date, now)
             if (date) {
+                if (date.getFullYear() === now.getFullYear() &&
+                    date.getMonth() === now.getMonth() &&
+                    date.getDate() === now.getDate()) {
+                    console.warn("date {} , now {} ", date, now)
+                }
                 return date.getFullYear() === now.getFullYear() &&
                     date.getMonth() === now.getMonth() &&
                     date.getDate() === now.getDate()
