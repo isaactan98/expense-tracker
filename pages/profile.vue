@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
 export default {
     data: () => ({
         user: null as any | null,
@@ -50,18 +50,21 @@ export default {
 
         auth.onAuthStateChanged((user: any) => {
             if (user) {
-                console.log(user)
+                // console.log(user)
                 this.user = user
             } else {
+                console.warn('user not logged in')
                 setTimeout(() => {
-                    // console.log('no user')
-                    // signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
-                    //     console.log(result)
-                    //     this.user = result.user
-                    // }).catch((error) => {
-                    //     console.log(error)
-                    // });
-                    signInWithRedirect(auth, new GoogleAuthProvider())
+                    // check if device is mobile 
+                    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i)) {
+                        signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
+                            // console.log(result)
+                            this.user = result.user
+                        }).catch((error) => {
+                            // console.log(error)
+                        });
+                    } else
+                        signInWithRedirect(auth, new GoogleAuthProvider())
                 });
             }
         }, 3000);
