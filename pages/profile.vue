@@ -62,8 +62,8 @@ export default {
                             // this.user = result.user
                             window.location.reload()
                         }).catch((error) => {
-                            // console.log(error)
-                            alert(error.message)
+                            console.log(error)
+                            // alert(error.message)
                         });
                     } else
                         signInWithRedirect(auth, new GoogleAuthProvider())
