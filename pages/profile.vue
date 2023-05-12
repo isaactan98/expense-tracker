@@ -58,10 +58,12 @@ export default {
                     // check if device is mobile 
                     if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i)) {
                         signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
-                            // console.log(result)
-                            this.user = result.user
+                            console.log(result)
+                            // this.user = result.user
+                            window.location.reload()
                         }).catch((error) => {
                             // console.log(error)
+                            alert(error.message)
                         });
                     } else
                         signInWithRedirect(auth, new GoogleAuthProvider())
@@ -73,10 +75,11 @@ export default {
         async logout() {
             const auth = this.fb.getAuth()
             await auth.signOut().then(() => {
-                console.log('logout')
+                // console.log('logout')
                 window.location.href = '/'
             }).catch((error: any) => {
                 console.log(error)
+                alert(error.message)
             });
         },
         dateTime(date: any) {
