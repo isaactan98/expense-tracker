@@ -1,5 +1,5 @@
 <template>
-    <div class="calendar bg-white rounded-lg shadow-lg">
+    <div class="calendar bg-white dark:bg-zinc-800 rounded-lg shadow-lg">
         <div class="calendar-header flex items-center justify-between px-4 py-2 bg-gray-200 rounded-t-lg">
             <button class="text-gray-600 hover:text-gray-800" @click="prevMonth">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -16,10 +16,47 @@
             </button>
         </div>
         <div class="calendar-body p-4">
+            <div class="calendar-row">
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Sun
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Mon
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Tue
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Wed
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Thu
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Fri
+                    </div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white">
+                        Sat
+                    </div>
+                </div>
+            </div>
             <div class="calendar-row" v-for="week in weeks" :key="week[0].date">
                 <div class="calendar-cell" v-for="day in week" :key="day.date">
-                    <div class="calendar-date text-center py-2 rounded-full"
-                        :class="{ 'text-gray-400': day.otherMonth, 'bg-blue-200': isCurrentDate(day.date) }">
+                    <div class="calendar-date text-center py-2 rounded-full dark:text-white" @click="dateTime(day.date)"
+                        :class="{ 'text-gray-400': day.otherMonth, 'bg-blue-200 dark:bg-slate-600': isCurrentDate(day.date) }">
                         {{ day.day }}
                     </div>
                 </div>
@@ -134,6 +171,14 @@ export default {
             isCurrentDate
         }
     },
+    data: () => ({
+        currentDate: new Date()
+    }),
+    methods: {
+        dateTime(date) {
+            alert(date)
+        }
+    }
 }
 </script>
   
