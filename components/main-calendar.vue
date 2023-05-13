@@ -137,16 +137,19 @@ export default {
         })
 
         const isCurrentDate = (date) => {
-            const now = new Date()
+            let now = new Date()
+            let selectDate = new Date(date)
+            now = new Date(now.setHours(0, 0, 0, 0))
+            // console.warn("date {} , now {} ", selectDate, now)
             if (date) {
-                if (date.getFullYear() === now.getFullYear() &&
-                    date.getMonth() === now.getMonth() &&
-                    date.getDate() === now.getDate()) {
-                    console.warn("date {} , now {} ", date, now)
-                }
-                return date.getFullYear() === now.getFullYear() &&
-                    date.getMonth() === now.getMonth() &&
-                    date.getDate() === now.getDate()
+                // if (selectDate.getFullYear() === now.getFullYear() &&
+                //     selectDate.getMonth() === now.getMonth() &&
+                //     selectDate.getDate() === now.getDate()) {
+                //     // console.warn("date {} , now {} ", selectDate, now)
+                // }
+                return selectDate.getFullYear() === now.getFullYear() &&
+                    selectDate.getMonth() === now.getMonth() &&
+                    selectDate.getDate() === now.getDate()
             }
         }
 
