@@ -8,3 +8,23 @@
         </div>
     </div>
 </template>
+
+<script lang="ts">
+
+export default {
+    data: () => ({
+        fb: null as any | null,
+    }),
+    mounted() {
+        this.fb = firebase()
+        const auth = this.fb.getAuth()
+        auth.onAuthStateChanged((user: any) => {
+            if (user) {
+                // console.log(user)
+            } else {
+                window.location.href = '/profile'
+            }
+        }, 3000);
+    },
+}
+</script>
