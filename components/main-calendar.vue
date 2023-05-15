@@ -1,6 +1,7 @@
 <template>
-    <div class="calendar bg-white dark:bg-zinc-800 rounded-lg shadow-lg">
-        <div class="calendar-header flex items-center justify-between px-4 py-2 bg-gray-200 rounded-t-lg">
+    <div class="calendar bg-white dark:bg-zinc-800 rounded-xl shadow-lg">
+        <div
+            class="calendar-header flex items-center justify-between px-4 py-2 bg-gray-200 dark:bg-zinc-900 dark:text-white rounded-t-xl">
             <button class="text-gray-600 hover:text-gray-800" @click="prevMonth">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
