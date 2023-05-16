@@ -56,7 +56,7 @@
             </div>
             <div class="calendar-row" v-for="week in weeks" :key="week[0].date">
                 <div class="calendar-cell" v-for="day in week" :key="day.date">
-                    <div class="calendar-date text-center py-2 rounded-full dark:text-white" @click="dateTime(day.date)"
+                    <div class="calendar-date text-center p-2 rounded-full dark:text-white" @click="dateTime(day.date)"
                         :class="{ 'text-gray-400': day.otherMonth, 'bg-blue-200 dark:bg-slate-600': isCurrentDate(day.date) }">
                         {{ day.day }}
                     </div>
@@ -183,9 +183,13 @@ export default {
     data: () => ({
         currentDate: new Date()
     }),
+    mounted() {
+        // console.log(this.currentDate)
+        this.dateTime(this.currentDate)
+    },
     methods: {
         dateTime(date) {
-            alert(date)
+            this.$emit('dateTime', date)
         }
     }
 }
@@ -229,6 +233,5 @@ export default {
 .calendar-date {
     width: 32px;
     height: 32px;
-    line-height: 32px;
 }
 </style>

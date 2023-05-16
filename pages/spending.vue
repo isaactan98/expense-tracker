@@ -5,29 +5,27 @@
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Spending</h1>
             </div>
 
-            <div class="flex bg-zinc-100 dark:bg-gray-800 dark:text-white text-center rounded-xl mb-10">
-                <button class="w-1/3 px-3 py-2"
-                    :class="indicator == 'weekly' ? 'rounded-xl bg-white dark:bg-slate-600' : ''" id="weekly"
-                    @click="clickedInd('weekly')">
+            <div class="flex bg-zinc-100 dark:bg-zinc-800 dark:text-white text-center rounded-xl mb-10">
+                <button class="w-1/3 px-3 py-2" :class="indicator == 'weekly' ? 'rounded-xl bg-white dark:bg-zinc-600' : ''"
+                    id="weekly" @click="clickedInd('weekly')">
                     Weekly
                 </button>
                 <button class="w-1/3 px-3 py-2"
-                    :class="indicator == 'monthly' ? 'rounded-xl bg-white dark:bg-slate-600' : ''" id="monthly"
+                    :class="indicator == 'monthly' ? 'rounded-xl bg-white dark:bg-zinc-600' : ''" id="monthly"
                     @click="clickedInd('monthly')">
                     Monthly
                 </button>
-                <button class="w-1/3 px-3 py-2"
-                    :class="indicator == 'yearly' ? 'rounded-xl bg-white dark:bg-slate-600' : ''" id="yearly"
-                    @click="clickedInd('yearly')">
+                <button class="w-1/3 px-3 py-2" :class="indicator == 'yearly' ? 'rounded-xl bg-white dark:bg-zinc-600' : ''"
+                    id="yearly" @click="clickedInd('yearly')">
                     Yearly
                 </button>
             </div>
 
-            <div class="p-10 rounded-xl bg-white dark:bg-gray-800 mb-10"></div>
+            <div class="p-10 rounded-xl bg-white dark:bg-zinc-800 mb-10"></div>
 
             <div class="flex gap-10 mb-10">
-                <div class="p-5 rounded-xl w-1/2 bg-white dark:bg-gray-800"></div>
-                <div class="p-5 rounded-xl w-1/2 bg-white dark:bg-gray-800"></div>
+                <div class="p-5 rounded-xl w-1/2 bg-white dark:bg-zinc-800"></div>
+                <div class="p-5 rounded-xl w-1/2 bg-white dark:bg-zinc-800"></div>
             </div>
 
             <div class="py-5">
@@ -35,7 +33,7 @@
             </div>
 
             <div class="overflow-y-auto max-h-96 scroll-smooth">
-                <div class="flex w-full gap-5 bg-white dark:bg-gray-800 rounded-xl p-3 my-5 shadow-md dark:text-white"
+                <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white"
                     v-for="d in dummies" :key="d">
                     <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
