@@ -1,7 +1,9 @@
 <template>
     <div class="min-h-screen container text-gray-500 dark:text-white">
-        <div class="grid gap-3 mx-3" v-if="user">
-            <h1 class="font-bold text-3xl mx-5 pt-3">Profile</h1>
+        <div class="grid gap-3 mx-5" v-if="user">
+            <div class="py-10">
+                <h1 class="font-bold text-xl text-gray-600 dark:text-white">Profile</h1>
+            </div>
             <div class="bg-white dark:bg-slate-800 grid grid-cols-3 gap-5 p-5 place-content-center">
                 <div class="w-28 h-28 justify-center items-center">
                     <img :src="user.photoURL" alt="" class="rounded-full" referrerpolicy="no-referrer">
