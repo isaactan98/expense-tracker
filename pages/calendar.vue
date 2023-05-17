@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto">
-        <ExpenseComp :show="expenseShow" @closeExpense="getReturnCheck" />
+        <ExpenseComp :show="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
         <div class="mx-5">
             <div class="py-10 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
@@ -71,9 +71,12 @@ export default {
         },
         showExpense() {
             this.expenseShow = true
+            this.selectedDateTime = this.selectedDateTime
+            document.body.classList.add('overflow-hidden')
         },
         getReturnCheck(e: any) {
             this.expenseShow = e
+            document.body.classList.remove('overflow-hidden')
         }
     }
 }
