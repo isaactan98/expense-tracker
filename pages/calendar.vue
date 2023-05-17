@@ -1,9 +1,10 @@
 <template>
     <div class="container mx-auto">
+        <ExpenseComp :show="expenseShow" @closeExpense="getReturnCheck" />
         <div class="mx-5">
             <div class="py-10 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
-                <button class="p-1">
+                <button class="p-1" @click="showExpense">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -49,6 +50,7 @@ export default {
         fb: null as any | null,
         selectedDateTime: null as any | null,
         dummies: [] as any | null,
+        expenseShow: false as boolean | null
     }),
     mounted() {
         this.fb = firebase()
@@ -66,6 +68,12 @@ export default {
         clickedInd(ind: any) {
             // this.indicator = ind
             this.selectedDateTime = new Date(ind).toLocaleDateString()
+        },
+        showExpense() {
+            this.expenseShow = true
+        },
+        getReturnCheck(e: any) {
+            this.expenseShow = e
         }
     }
 }
