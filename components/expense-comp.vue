@@ -16,9 +16,13 @@
                 </div>
             </div>
             <div class="mt-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-1/5 text-center">
-                        <span class="px-4 py-2 bg-zinc-600 rounded-full">USD</span>
+                <div class="flex items-center gap-5">
+                    <div class="w-1/5 text-center" v-if="Object.keys(all_currency).length > 0">
+                        <select class="px-4 py-2 bg-zinc-600 rounded-full outline-none w-full appearance-none text-center">
+                            <optgroup v-for="c in Object.keys(all_currency)" :key="c" :label="c">
+                                <option v-for="cc in all_currency[c]" :value="cc">{{ cc }}</option>
+                            </optgroup>
+                        </select>
                     </div>
                     <div class="w-4/5">
                         <input type="number" class="w-full bg-transparent outline-none" style="font-size: 5em;"
@@ -52,11 +56,21 @@
 export default {
     props: ['show', 'date'],
     data: () => ({
-        selectedDate: null as any | null
+        selectedDate: null as any | null,
+        all_currency: [] as any | null,
     }),
     mounted() {
         this.selectedDate = this.date ?? new Date()
-        console.log("selected date", this.selectedDate)
+        // console.log("selected date", this.selectedDate)
+        for (let c in currencies) {
+            const alp = c.substring(0, 1).toString()
+            if (this.all_currency[alp] == undefined) {
+                this.all_currency[alp] = []
+            }
+        }
+        for (let a in this.all_currency) {
+            this.all_currency[a] = Object.keys(currencies).filter(key => key.startsWith(a));
+        }
     },
     watch: {
         date() {
