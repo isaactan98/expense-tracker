@@ -56,8 +56,9 @@
             </div>
             <div class="calendar-row" v-for="week in weeks" :key="week[0].date">
                 <div class="calendar-cell" v-for="day in week" :key="day.date">
-                    <div class="calendar-date text-center p-2 rounded-full dark:text-white" @click="dateTime(day.date)"
-                        :class="{ 'text-gray-400': day.otherMonth, 'bg-blue-200 dark:bg-slate-600': isCurrentDate(day.date) }">
+                    <div class="calendar-date text-center p-2 rounded-full dark:text-white flex justify-center items-center"
+                        @click="dateTime(day.date)"
+                        :class="{ 'text-gray-400': day.otherMonth, 'bg-blue-200 dark:bg-slate-600': isCurrentDate(day.date), 'border border-blue-200 dark:border-white': checkDt(day.date) }">
                         {{ day.day }}
                     </div>
                 </div>
@@ -181,7 +182,8 @@ export default {
         }
     },
     data: () => ({
-        currentDate: new Date()
+        currentDate: new Date(),
+        selectedDate: new Date()
     }),
     mounted() {
         // console.log(this.currentDate)
@@ -189,7 +191,18 @@ export default {
     },
     methods: {
         dateTime(date) {
+            this.selectedDate = date
             this.$emit('dateTime', date)
+            // console.log("selected date", this.selectedDate == date)
+        },
+        checkDt(date) {
+            let newSetDt = new Date(this.selectedDate.setHours(0, 0, 0, 0))
+
+            if (date) {
+                return newSetDt.getFullYear() === date.getFullYear()
+                    && newSetDt.getMonth() === date.getMonth()
+                    && newSetDt.getDate() === date.getDate()
+            }
         }
     }
 }
