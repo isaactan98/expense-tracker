@@ -43,7 +43,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="w-4/5 mx-auto justify-center flex">
+                    <div class="w-4/5 mx-auto justify-center flex" v-if="selectedDate != null">
                         <input type="date" v-model="selectedDate" class="bg-transparent outline-none text-2xl">
                     </div>
                 </div>
@@ -55,12 +55,15 @@
 <script lang="ts">
 export default {
     props: ['show', 'date'],
-    data: () => ({
-        selectedDate: null as any | null,
-        all_currency: [] as any | null,
-    }),
+    data() {
+        return {
+            all_currency: {} as any,
+            selectedDate: this.date
+        }
+    },
     mounted() {
-        this.selectedDate = this.date ?? new Date()
+        // console.log("date", this.date)
+        // this.selectedDate = this.date ?? new Date()
         // console.log("selected date", this.selectedDate)
         for (let c in currencies) {
             const alp = c.substring(0, 1).toString()
@@ -70,14 +73,6 @@ export default {
         }
         for (let a in this.all_currency) {
             this.all_currency[a] = Object.keys(currencies).filter(key => key.startsWith(a));
-        }
-    },
-    watch: {
-        date() {
-            const [day, month, year] = this.date.split("/");
-            this.selectedDate = new Date(`${year}-${month}-${day}`);
-            this.selectedDate = this.selectedDate.toISOString().split("T")[0];
-            console.log("selected date", this.selectedDate)
         }
     },
     methods: {

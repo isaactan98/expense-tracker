@@ -101,7 +101,7 @@ export default {
 
                 weeks[weekIndex].push({
                     day: i,
-                    date: new Date(currentYear.value, currentMonth.value, i),
+                    date: currentYear.value + '-' + (currentMonth.value + 1) + '-' + i,
                     otherMonth: false,
                 })
             }
@@ -139,11 +139,11 @@ export default {
         })
 
         const isCurrentDate = (date) => {
-            let now = new Date()
-            let selectDate = new Date(date)
-            now = new Date(now.setHours(0, 0, 0, 0))
-            // console.warn("date {} , now {} ", selectDate, now)
-            if (date) {
+            if (notNull(date)) {
+                let now = new Date()
+                let selectDate = new Date(date)
+                now = new Date(now.setHours(0, 0, 0, 0))
+                selectDate = new Date(selectDate.setHours(0, 0, 0, 0))
                 // if (selectDate.getFullYear() === now.getFullYear() &&
                 //     selectDate.getMonth() === now.getMonth() &&
                 //     selectDate.getDate() === now.getDate()) {
@@ -187,16 +187,20 @@ export default {
     }),
     mounted() {
         // console.log(this.currentDate)
-        this.dateTime(this.currentDate)
+        let curDate = this.currentDate.getFullYear() + '-' + (this.currentDate.getMonth() + 1) + '-' + this.currentDate.getDate()
+        this.dateTime(curDate)
     },
     methods: {
         dateTime(date) {
-            this.selectedDate = date
-            this.$emit('dateTime', date)
-            // console.log("selected date", this.selectedDate == date)
+            if (date) {
+                this.selectedDate = new Date(date)
+                // this.selectedDate = new Date(this.selectedDate.setHours(0, 0, 0, 0))
+                this.$emit('dateTime', this.selectedDate)
+            }
         },
         checkDt(date) {
             let newSetDt = new Date(this.selectedDate.setHours(0, 0, 0, 0))
+            var date = new Date(date)
 
             if (date) {
                 return newSetDt.getFullYear() === date.getFullYear()

@@ -1,6 +1,11 @@
 <template>
     <div class="container mx-auto">
-        <ExpenseComp :show="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
+        <transition enter-active-class="transition duration-500 ease-out" enter-from-class="transform translate-y-full"
+            enter-to-class="transform translate-y-0" leave-active-class="transition duration-500 ease-out"
+            leave-from-class="transform translate-y-0" leave-to-class="transform translate-y-full" :appear="true"
+            :show="expenseShow">
+            <ExpenseComp v-if="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
+        </transition>
         <div class="mx-5">
             <div class="py-10 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
@@ -66,12 +71,16 @@ export default {
     },
     methods: {
         clickedInd(ind: any) {
-            // this.indicator = ind
-            this.selectedDateTime = new Date(ind).toLocaleDateString()
+            // console.log("%cind: " + ind, "color: yellow")
+            if (notNull(ind)) {
+                this.selectedDateTime = ind.getFullYear() + "-" + (toDoubleDigits(ind.getMonth())) + "-" + ind.getDate()
+                // this.selectedDateTime = new Date(ind).toISOString().split('T')[0]
+            }
         },
         showExpense() {
             this.expenseShow = true
-            this.selectedDateTime = this.selectedDateTime
+            // change date format to YYYY-MM-DD
+            // this.selectedDateTime = new Date(this.selectedDateTime).toISOString().split('T')[0]
             document.body.classList.add('overflow-hidden')
         },
         getReturnCheck(e: any) {
