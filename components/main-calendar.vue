@@ -187,7 +187,7 @@ export default {
     }),
     mounted() {
         // console.log(this.currentDate)
-        let curDate = this.currentDate.getFullYear() + '-' + (this.currentDate.getMonth() + 1) + '-' + this.currentDate.getDate()
+        let curDate = this.currentDate.getFullYear() + '-' + (toDoubleDigits(this.currentDate.getMonth())) + '-' + this.currentDate.getDate()
         this.dateTime(curDate)
     },
     methods: {
