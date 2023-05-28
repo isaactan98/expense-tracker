@@ -101,7 +101,7 @@ export default {
 
                 weeks[weekIndex].push({
                     day: i,
-                    date: currentYear.value + '-' + (currentMonth.value + 1) + '-' + i,
+                    date: currentYear.value + '-' + (toDoubleDigits(currentMonth.value)) + '-' + i,
                     otherMonth: false,
                 })
             }
