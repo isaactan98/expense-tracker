@@ -25,8 +25,8 @@
                         </select>
                     </div>
                     <div class="w-4/5">
-                        <input type="number" class="w-full bg-transparent outline-none" style="font-size: 5em;"
-                            placeholder="0.00">
+                        <input type="number" class="w-full bg-transparent outline-none text-right" pattern="[0-9]*"
+                            inputmode="numeric" style="font-size: 5em;" placeholder="0.00">
                     </div>
                 </div>
                 <div class="mt-5 flex items-center w-full gap-3">
@@ -43,9 +43,32 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="w-4/5 mx-auto justify-center flex" v-if="selectedDate != null">
+                    <div class="w-4/5 mx-auto justify-center flex">
                         <input type="date" v-model="selectedDate" class="bg-transparent outline-none text-2xl">
                     </div>
+                </div>
+                <div class="mt-5 flex items-center w-full gap-3">
+                    <div class="w-1/5">
+                        <div class="p-4 rounded-full bg-zinc-500 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-8 h-8 mx-auto">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="w-4/5 mx-auto justify-center flex">
+                        <select class="py-3 px-5 bg-transparent outline-none text-2xl">
+                            <option :value="cat.id" v-for="cat in categoryList">
+                                {{ cat.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button class="bg-zinc-900 py-3 px-5 rounded-full w-full">SAVE</button>
                 </div>
             </div>
         </div>
@@ -82,3 +105,8 @@ export default {
     }
 }
 </script>
+<style>
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+</style>

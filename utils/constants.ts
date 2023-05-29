@@ -169,3 +169,100 @@ export const currencies = {
   ZMW: "Zambian Kwacha",
   ZWL: "Zimbabwean Dollar",
 };
+
+export const categoryList = [
+  {
+    id: "Food",
+    name: "Food",
+    subcategories: [
+      {
+        id: "Groceries",
+        name: "Groceries",
+      },
+      {
+        id: "Restaurants",
+        name: "Restaurants",
+      },
+      {
+        id: "FastFood",
+        name: "Fast Food",
+      },
+    ],
+  },
+  {
+    id: "Transportation",
+    name: "Transportation",
+    subcategories: [
+      {
+        id: "PublicTransportation",
+        name: "Public Transportation",
+      },
+      {
+        id: "Gasoline",
+        name: "Gasoline",
+      },
+      {
+        id: "CarMaintenance",
+        name: "Car Maintenance",
+      },
+    ],
+  },
+  {
+    id: "Housing",
+    name: "Housing",
+    subcategories: [
+      {
+        id: "Rent",
+        name: "Rent",
+      },
+      {
+        id: "Mortgage",
+        name: "Mortgage",
+      },
+      {
+        id: "Utilities",
+        name: "Utilities",
+      },
+      {
+        id: "HomeRepairs",
+        name: "Home Repairs",
+      },
+    ],
+  },
+  {
+    id: "Entertainment",
+    name: "Entertainment",
+    subcategories: [
+      {
+        id: "Movies",
+        name: "Movies",
+      },
+      {
+        id: "Concerts",
+        name: "Concerts",
+      },
+      {
+        id: "SportsEvents",
+        name: "Sports Events",
+      },
+    ],
+  },
+  {
+    id: "Healthcare",
+    name: "Healthcare",
+    subcategories: [
+      {
+        id: "MedicalExpenses",
+        name: "Medical Expenses",
+      },
+      {
+        id: "Pharmacy",
+        name: "Pharmacy",
+      },
+      {
+        id: "HealthInsurance",
+        name: "Health Insurance",
+      },
+    ],
+  },
+];
