@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 export const firebase = () => {
   const config = useRuntimeConfig();
@@ -17,5 +18,6 @@ export const firebase = () => {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  return { app, analytics, getAuth };
+  const db = getFirestore(app);
+  return { app, analytics, getAuth, db };
 };

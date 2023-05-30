@@ -26,7 +26,7 @@
 
                 <div class="overflow-y-auto max-h-96 scroll-smooth">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white"
-                        v-for="d in dummies" :key="d">
+                        v-for="e in expenseList" :key="e">
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -35,10 +35,10 @@
                             </svg>
                         </div>
                         <div class="w-10/12 flex justify-between items-center">
-                            <div>Flue</div>
+                            <div>{{ e.category }}</div>
                             <div>
-                                <p>$55.00</p>
-                                <p class="text-zinc-400 text-xs">06 May</p>
+                                <p class="text-right">$ {{ e.amount?.toFixed(2) }}</p>
+                                <p class="text-zinc-400 text-xs">{{ e.date }}</p>
                             </div>
                         </div>
                     </div>
@@ -49,13 +49,14 @@
 </template>
 
 <script lang="ts">
-
+import { collection, where, query, getDocs, onSnapshot } from 'firebase/firestore'
 export default {
     data: () => ({
         fb: null as any | null,
         selectedDateTime: null as any | null,
         dummies: [] as any | null,
-        expenseShow: false as boolean | null
+        expenseShow: false as boolean | null,
+        expenseList: [] as any | null
     }),
     mounted() {
         this.fb = firebase()
@@ -68,6 +69,7 @@ export default {
             }
         }, 3000);
         this.dummies = new Array(10)
+        this.getExpense(this.selectedDateTime)
     },
     methods: {
         clickedInd(ind: any) {
@@ -75,6 +77,7 @@ export default {
             if (notNull(ind)) {
                 this.selectedDateTime = ind.getFullYear() + "-" + (toDoubleDigits(ind.getMonth())) + "-" + ind.getDate()
                 // this.selectedDateTime = new Date(ind).toISOString().split('T')[0]
+                this.getExpense(this.selectedDateTime)
             }
         },
         showExpense() {
@@ -86,6 +89,29 @@ export default {
         getReturnCheck(e: any) {
             this.expenseShow = e
             document.body.classList.remove('overflow-hidden')
+        },
+        async getExpense(date: string) {
+            this.fb = firebase()
+            const auth = await this.fb.getAuth()
+            const user = auth.currentUser
+            const ref = collection(this.fb.db, 'expenses')
+            const q = query(ref, where('date', '==', date), where('userId', '==', user?.uid))
+            // getDocs(q).then((querySnapshot) => {
+            //     querySnapshot.forEach((doc) => {
+            //         // console.log(doc.id, " => ", doc.data());
+            //         doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
+            //         this.expenseList.push(doc.data())
+            //     });
+            // });
+
+            onSnapshot(q, (querySnapshot) => {
+                this.expenseList = []
+                querySnapshot.forEach((doc) => {
+                    // console.log(doc.id, " => ", doc.data());
+                    doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
+                    this.expenseList.push(doc.data())
+                });
+            });
         }
     }
 }

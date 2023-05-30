@@ -18,7 +18,9 @@
             <div class="mt-10">
                 <div class="flex items-center gap-5">
                     <div class="w-1/5 text-center" v-if="Object.keys(all_currency).length > 0">
-                        <select class="px-4 py-2 bg-zinc-600 rounded-full outline-none w-full appearance-none text-center">
+                        <select
+                            class="px-4 py-2 text-white bg-zinc-600 rounded-full outline-none w-full appearance-none text-center"
+                            v-model="currency">
                             <optgroup v-for="c in Object.keys(all_currency)" :key="c" :label="c">
                                 <option v-for="cc in all_currency[c]" :value="cc">{{ cc }}</option>
                             </optgroup>
@@ -26,13 +28,13 @@
                     </div>
                     <div class="w-4/5">
                         <input type="number" class="w-full bg-transparent outline-none text-right" pattern="[0-9]*"
-                            inputmode="numeric" style="font-size: 5em;" placeholder="0.00">
+                            inputmode="numeric" style="font-size: 5em;" placeholder="0.00" v-model="expenseAmount">
                     </div>
                 </div>
                 <div class="mt-5 flex items-center w-full gap-3">
                     <!-- category -->
                     <div class="w-1/5">
-                        <div class="p-4 rounded-full bg-zinc-500 text-center">
+                        <div class="p-4 rounded-full bg-zinc-500 text-center text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-8 h-8 mx-auto">
                                 <path
@@ -49,7 +51,7 @@
                 </div>
                 <div class="mt-5 flex items-center w-full gap-3">
                     <div class="w-1/5">
-                        <div class="p-4 rounded-full bg-zinc-500 text-center">
+                        <div class="p-4 rounded-full bg-zinc-500 text-center text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-8 h-8 mx-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,7 +61,7 @@
                         </div>
                     </div>
                     <div class="w-4/5 mx-auto justify-center flex">
-                        <select class="py-3 px-5 bg-transparent outline-none text-2xl">
+                        <select class="py-3 px-5 bg-transparent outline-none text-2xl" v-model="expenseCategory">
                             <option :value="cat.id" v-for="cat in categoryList">
                                 {{ cat.name }}
                             </option>
@@ -67,8 +69,8 @@
                     </div>
                 </div>
 
-                <div class="mt-8">
-                    <button class="bg-zinc-900 py-3 px-5 rounded-full w-full">SAVE</button>
+                <div class="mt-10">
+                    <button class="text-white bg-zinc-900 py-3 px-5 rounded-full w-full" @click="saveExpense">SAVE</button>
                 </div>
             </div>
         </div>
@@ -76,18 +78,21 @@
 </template>
 
 <script lang="ts">
+import { addDoc, collection } from 'firebase/firestore'
 export default {
     props: ['show', 'date'],
     data() {
         return {
             all_currency: {} as any,
-            selectedDate: this.date
+            selectedDate: this.date,
+            expenseAmount: null,
+            currency: 'USD' as string,
+            expenseCategory: 'Food' as string,
         }
     },
     mounted() {
-        // console.log("date", this.date)
-        // this.selectedDate = this.date ?? new Date()
-        // console.log("selected date", this.selectedDate)
+        this.currency = localStorage.getItem('currency') ?? 'MYR'
+
         for (let c in currencies) {
             const alp = c.substring(0, 1).toString()
             if (this.all_currency[alp] == undefined) {
@@ -101,6 +106,32 @@ export default {
     methods: {
         closeExpense() {
             this.$emit('closeExpense', false)
+        },
+        changeCurrency(currency: string) {
+            console.log("currency", currency)
+            this.currency = currency
+            localStorage.setItem('currency', currency)
+        },
+        saveExpense() {
+            const fb = firebase()
+            const auth = fb.getAuth()
+            let user = auth.currentUser
+            let expense = new Expense(null, this.selectedDate, this.expenseCategory, this.currency, this.expenseAmount, user?.uid)
+
+            addDoc(collection(fb.db, 'expenses'), {
+                date: expense.date,
+                category: expense.category,
+                currency: expense.currency,
+                amount: expense.amount,
+                userId: expense.userId
+            })
+                .then((docRef) => {
+                    // console.log("Document written with ID: ", docRef.id);
+                    this.$emit('closeExpense', false)
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
         }
     }
 }
