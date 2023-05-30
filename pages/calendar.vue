@@ -64,12 +64,12 @@ export default {
         auth.onAuthStateChanged((user: any) => {
             if (user) {
                 // console.log(user)
+                this.getExpense(this.selectedDateTime)
             } else {
                 window.location.href = '/profile'
             }
         }, 3000);
         this.dummies = new Array(10)
-        this.getExpense(this.selectedDateTime)
     },
     methods: {
         clickedInd(ind: any) {
@@ -93,25 +93,19 @@ export default {
         async getExpense(date: string) {
             this.fb = firebase()
             const auth = await this.fb.getAuth()
-            const user = auth.currentUser
+            const user = await auth.currentUser
             const ref = collection(this.fb.db, 'expenses')
-            const q = query(ref, where('date', '==', date), where('userId', '==', user?.uid))
-            // getDocs(q).then((querySnapshot) => {
-            //     querySnapshot.forEach((doc) => {
-            //         // console.log(doc.id, " => ", doc.data());
-            //         doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
-            //         this.expenseList.push(doc.data())
-            //     });
-            // });
-
-            onSnapshot(q, (querySnapshot) => {
-                this.expenseList = []
-                querySnapshot.forEach((doc) => {
-                    // console.log(doc.id, " => ", doc.data());
-                    doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
-                    this.expenseList.push(doc.data())
+            if (notNull(user)) {
+                const q = query(ref, where('date', '==', date), where('userId', '==', user?.uid))
+                onSnapshot(q, (querySnapshot) => {
+                    this.expenseList = []
+                    querySnapshot.forEach((doc) => {
+                        // console.log(doc.id, " => ", doc.data());
+                        doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
+                        this.expenseList.push(doc.data())
+                    });
                 });
-            });
+            }
         }
     }
 }
