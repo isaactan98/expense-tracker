@@ -101,7 +101,7 @@ export default {
 
                 weeks[weekIndex].push({
                     day: i,
-                    date: currentYear.value + '-' + (toDoubleDigits(currentMonth.value)) + '-' + i,
+                    date: currentYear.value + '-' + (toDoubleDigits(currentMonth.value)) + '-' + (dateDoubleDigits(i)),
                     otherMonth: false,
                 })
             }
@@ -187,7 +187,7 @@ export default {
     }),
     mounted() {
         // console.log(this.currentDate)
-        let curDate = this.currentDate.getFullYear() + '-' + (toDoubleDigits(this.currentDate.getMonth())) + '-' + this.currentDate.getDate()
+        let curDate = this.currentDate.getFullYear() + '-' + (toDoubleDigits(this.currentDate.getMonth())) + '-' + (dateDoubleDigits(this.currentDate.getDate()))
         this.dateTime(curDate)
     },
     methods: {

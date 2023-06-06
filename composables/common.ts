@@ -6,3 +6,7 @@ export const toDoubleDigits = (num: number): string => {
   num += 1;
   return num < 10 ? "0" + num : num.toString();
 };
+
+export const dateDoubleDigits = (date: number): string => {
+  return date < 10 ? "0" + date : date.toString();
+};

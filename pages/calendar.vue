@@ -75,7 +75,7 @@ export default {
         clickedInd(ind: any) {
             // console.log("%cind: " + ind, "color: yellow")
             if (notNull(ind)) {
-                this.selectedDateTime = ind.getFullYear() + "-" + (toDoubleDigits(ind.getMonth())) + "-" + ind.getDate()
+                this.selectedDateTime = ind.getFullYear() + "-" + (toDoubleDigits(ind.getMonth())) + "-" + dateDoubleDigits(ind.getDate())
                 // this.selectedDateTime = new Date(ind).toISOString().split('T')[0]
                 this.getExpense(this.selectedDateTime)
             }
