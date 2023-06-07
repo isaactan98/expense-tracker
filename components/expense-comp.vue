@@ -27,8 +27,8 @@
                         </select>
                     </div>
                     <div class="w-4/5">
-                        <input type="number" class="w-full bg-transparent outline-none text-right" pattern="[0-9]*"
-                            inputmode="numeric" style="font-size: 5em;" placeholder="0.00" v-model="expenseAmount">
+                        <input type="text" class="w-full bg-transparent outline-none text-right" @input="convertToCurrency"
+                            style="font-size: 5em;" placeholder="0.00" v-model="expenseAmount">
                     </div>
                 </div>
                 <div class="mt-5 flex items-center w-full gap-3">
@@ -85,7 +85,7 @@ export default {
         return {
             all_currency: {} as any,
             selectedDate: this.date,
-            expenseAmount: null,
+            expenseAmount: null as number | null,
             currency: 'USD' as string,
             expenseCategory: 'Food' as string,
         }
@@ -104,6 +104,21 @@ export default {
         }
     },
     methods: {
+        convertToCurrency() {
+            // replace dot 
+            this.expenseAmount = Number(this.expenseAmount?.toString().replace('.', '')) ?? 0
+            // split the amount into array
+            let amount = this.expenseAmount?.toString().split('')
+
+            if (amount.length < 3) {
+                amount?.splice(0, 0, '0')
+            }
+            // add dot to the array
+            amount?.splice(amount.length - 2, 0, '.')
+            // join the array
+            this.expenseAmount = Number(amount?.join(''))
+        },
+
         closeExpense() {
             this.$emit('closeExpense', false)
         },
