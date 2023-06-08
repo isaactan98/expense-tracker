@@ -28,7 +28,8 @@
                     </div>
                     <div class="w-4/5">
                         <input type="text" class="w-full bg-transparent outline-none text-right" @input="convertToCurrency"
-                            style="font-size: 5em;" placeholder="0.00" v-model="expenseAmount">
+                            inputmode="numeric" style="font-size: 5em;" placeholder="0.00" v-model="expenseAmount"
+                            pattern="[0-9]*">
                     </div>
                 </div>
                 <div class="mt-5 flex items-center w-full gap-3">
@@ -85,7 +86,7 @@ export default {
         return {
             all_currency: {} as any,
             selectedDate: this.date,
-            expenseAmount: null as number | null,
+            expenseAmount: "" as string,
             currency: 'USD' as string,
             expenseCategory: 'Food' as string,
         }
@@ -105,18 +106,34 @@ export default {
     },
     methods: {
         convertToCurrency() {
+            console.clear()
+            // console.log("this.expenseAmount1", this.expenseAmount)
             // replace dot 
-            this.expenseAmount = Number(this.expenseAmount?.toString().replace('.', '')) ?? 0
+            this.expenseAmount = this.expenseAmount?.toString().replace('.', '') ?? 0
+            // console.log("this.expenseAmount2", this.expenseAmount)
             // split the amount into array
             let amount = this.expenseAmount?.toString().split('')
+            // console.log("amount1", amount)
 
-            if (amount.length < 3) {
-                amount?.splice(0, 0, '0')
+            if (amount.length == 1) {
+                amount = ['0', '0', this.expenseAmount]
+            } else if (amount.length == 2) {
+                amount = ['0', amount[0], amount[1]]
+            }
+
+            if (amount.length > 3) {
+                // remove the first 0
+                if (amount[0] == '0') {
+                    amount?.splice(0, 1)
+                }
+                // console.log("amount2.5: ", amount)
             }
             // add dot to the array
             amount?.splice(amount.length - 2, 0, '.')
+            // console.log("amount3", amount)
             // join the array
-            this.expenseAmount = Number(amount?.join(''))
+            this.expenseAmount = amount?.join('')
+            // console.log("this.expenseAmount3", this.expenseAmount)
         },
 
         closeExpense() {
@@ -131,7 +148,7 @@ export default {
             const fb = firebase()
             const auth = fb.getAuth()
             let user = auth.currentUser
-            let expense = new Expense(null, this.selectedDate, this.expenseCategory, this.currency, this.expenseAmount, user?.uid)
+            let expense = new Expense(null, this.selectedDate, this.expenseCategory, this.currency, Number(this.expenseAmount), user?.uid)
 
             addDoc(collection(fb.db, 'expenses'), {
                 date: expense.date,
