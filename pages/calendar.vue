@@ -6,7 +6,7 @@
             :show="expenseShow">
             <ExpenseComp v-if="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
         </transition>
-        <div class="mx-5">
+        <div class="mx-5 relative min-h-full">
             <div class="py-10 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
                 <button class="p-1" @click="showExpense">
@@ -27,8 +27,9 @@
                 <div class="overflow-y-auto max-h-96 scroll-smooth">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
                         v-for="e in expenseList" :key="e">
-                        <div class=" absolute w-full h-full -mx-3 -my-5" draggable="true" @touchstart="dragOn()"
-                            @mousedown="dragOn()" @touchmove="dragMethod(e, $event)" @mousemove="dragMethod(e, $event)">
+                        <div class=" absolute w-full h-full -mx-3 -my-5" draggable="true" @touchstart="dragOn" :id="e.id"
+                            @dragstart="dragOn" @dragend="dragOff" @touchmove="dragMethod($event)"
+                            @mousemove="dragMethod($event)">
                         </div>
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -48,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="my-3 w-2/3 mx-auto border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg "
+            <div class="my-3 w-2/3 mx-auto border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg sticky bottom-1 "
                 :class="isDragged ? 'block' : 'hidden'" id="deleteArea">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-8 h-8 text-red-600 mx-auto" id="">
@@ -126,29 +127,23 @@ export default {
                 });
             }
         },
-        dragOn() {
+        dragOn(event: any) {
             this.isDragged = true
+            // event.dataTransfer.setData("text/plain", event.target.id)
         },
-        dragOff() {
-            if (this.isDragged) {
-                console.log("drag off")
-            }
+        dragOff(event: any) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+            this.dragMethod(event)
             this.isDragged = false
         },
-        dragMethod(expense: any, e: any) {
-            if (this.isDragged) {
-                // console.log(expense, e)
-                const deleteArea = document.getElementById('deleteArea')
-                const deleteAreaRect = deleteArea?.getBoundingClientRect()
-                const expenseRect = e.target.getBoundingClientRect()
-                console.log(deleteAreaRect, expenseRect)
-                if (deleteAreaRect?.top && deleteAreaRect?.bottom && deleteAreaRect?.left && deleteAreaRect?.right) {
-                    if (expenseRect.top > deleteAreaRect.top && expenseRect.bottom < deleteAreaRect.bottom && expenseRect.left > deleteAreaRect.left && expenseRect.right < deleteAreaRect.right) {
-                        console.log("delete")
-                        // this.deleteExpense(expense.id)
-                    }
-                }
-            }
+        dragMethod(event: any) {
+            // if (this.isDragged) {
+            //     // event.preventDefault();
+            //     const data = event.dataTransfer.getData("text/plain");
+            //     const element = document.getElementById(data);
+            //     // event.target.appendChild(element);
+            //     console.log(event.target, data)
+            // }
         }
     }
 }
