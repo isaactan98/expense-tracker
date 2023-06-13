@@ -25,8 +25,11 @@
                 </div>
 
                 <div class="overflow-y-auto max-h-96 scroll-smooth">
-                    <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white"
+                    <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
                         v-for="e in expenseList" :key="e">
+                        <div class=" absolute w-full h-full -mx-3 -my-5" draggable="true" @touchstart="dragOn()"
+                            @mousedown="dragOn()" @touchmove="dragMethod(e, $event)" @mousemove="dragMethod(e, $event)">
+                        </div>
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -44,6 +47,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="my-3 w-2/3 mx-auto border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg "
+                :class="isDragged ? 'block' : 'hidden'" id="deleteArea">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-8 h-8 text-red-600 mx-auto" id="">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
         </div>
     </div>
 </template>
@@ -56,7 +68,8 @@ export default {
         selectedDateTime: null as any | null,
         dummies: [] as any | null,
         expenseShow: false as boolean | null,
-        expenseList: [] as any | null
+        expenseList: [] as any | null,
+        isDragged: false as boolean | null
     }),
     mounted() {
         this.fb = firebase()
@@ -70,6 +83,12 @@ export default {
             }
         }, 3000);
         this.dummies = new Array(10)
+        document.addEventListener('mouseup', this.dragOff);
+        document.addEventListener('touchend', this.dragOff);
+    },
+    beforeUnmount() {
+        document.removeEventListener('mouseup', this.dragOff);
+        document.removeEventListener('touchend', this.dragOff);
     },
     methods: {
         clickedInd(ind: any) {
@@ -102,9 +121,33 @@ export default {
                     querySnapshot.forEach((doc) => {
                         // console.log(doc.id, " => ", doc.data());
                         doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
-                        this.expenseList.push(doc.data())
+                        this.expenseList.push({ ...doc.data(), id: doc.id })
                     });
                 });
+            }
+        },
+        dragOn() {
+            this.isDragged = true
+        },
+        dragOff() {
+            if (this.isDragged) {
+                console.log("drag off")
+            }
+            this.isDragged = false
+        },
+        dragMethod(expense: any, e: any) {
+            if (this.isDragged) {
+                // console.log(expense, e)
+                const deleteArea = document.getElementById('deleteArea')
+                const deleteAreaRect = deleteArea?.getBoundingClientRect()
+                const expenseRect = e.target.getBoundingClientRect()
+                console.log(deleteAreaRect, expenseRect)
+                if (deleteAreaRect?.top && deleteAreaRect?.bottom && deleteAreaRect?.left && deleteAreaRect?.right) {
+                    if (expenseRect.top > deleteAreaRect.top && expenseRect.bottom < deleteAreaRect.bottom && expenseRect.left > deleteAreaRect.left && expenseRect.right < deleteAreaRect.right) {
+                        console.log("delete")
+                        // this.deleteExpense(expense.id)
+                    }
+                }
             }
         }
     }
