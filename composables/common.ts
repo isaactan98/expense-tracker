@@ -10,3 +10,14 @@ export const toDoubleDigits = (num: number): string => {
 export const dateDoubleDigits = (date: number): string => {
   return date < 10 ? "0" + date : date.toString();
 };
+
+let isDragged = false;
+export const useDrag = () => {
+  const setDragged = (d: boolean) => {
+    isDragged = d;
+  };
+  const getDragged = () => {
+    return isDragged;
+  };
+  return { setDragged, getDragged };
+};

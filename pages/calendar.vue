@@ -6,7 +6,7 @@
             :show="expenseShow">
             <ExpenseComp v-if="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
         </transition>
-        <div class="mx-5 relative min-h-full">
+        <div class="mx-5">
             <div class="py-10 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
                 <button class="p-1" @click="showExpense">
@@ -48,8 +48,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="my-3 w-2/3 mx-auto border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg sticky bottom-1 "
+            <div class="my-3 w-full -mx-5 border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg absolute bottom-12 z-50 "
                 :class="isDragged ? 'block' : 'hidden'" id="deleteArea">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-8 h-8 text-red-600 mx-auto" id="">
@@ -128,13 +127,17 @@ export default {
             }
         },
         dragOn(event: any) {
-            this.isDragged = true
+            useDrag().setDragged(true)
+            console.log("dragOn", useDrag().getDragged(), event)
+            this.isDragged = useDrag().getDragged()
             // event.dataTransfer.setData("text/plain", event.target.id)
         },
         dragOff(event: any) {
-            event.dataTransfer.setData("text/plain", event.target.id);
-            this.dragMethod(event)
-            this.isDragged = false
+            // this.dragMethod(event)
+            useDrag().setDragged(false)
+            console.log("dragoff", useDrag().getDragged())
+            this.isDragged = useDrag().getDragged()
+            // event.dataTransfer.setData("text/plain", event.target.id);
         },
         dragMethod(event: any) {
             // if (this.isDragged) {
