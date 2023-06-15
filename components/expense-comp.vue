@@ -70,8 +70,34 @@
                     </div>
                 </div>
 
+                <div class="mt-10" v-if="expense_id">
+                    <button class="bg-red-500 text-white py-3 px-5 w-full rounded-full" @click="deleteExpense(expense_id)">
+                        <span v-if="!loading.delete">DELETE</span>
+                        <span v-if="loading.delete" class="ml-3">
+                            <svg class="animate-spin h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+
                 <div class="mt-10">
-                    <button class="text-white bg-zinc-900 py-3 px-5 rounded-full w-full" @click="saveExpense">SAVE</button>
+                    <button class="text-white bg-zinc-900 py-3 px-5 rounded-full w-full" @click="saveExpense">
+                        <span v-if="!loading.save">SAVE</span>
+                        <span v-if="loading.save" class="ml-3">
+                            <svg class="animate-spin h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -79,9 +105,9 @@
 </template>
 
 <script lang="ts">
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, where, deleteDoc, onSnapshot, doc } from 'firebase/firestore'
 export default {
-    props: ['show', 'date'],
+    props: ['show', 'date', 'expenseId'],
     data() {
         return {
             all_currency: {} as any,
@@ -89,6 +115,11 @@ export default {
             expenseAmount: "" as string,
             currency: 'USD' as string,
             expenseCategory: 'Food' as string,
+            loading: {
+                save: false,
+                delete: false
+            },
+            expense_id: this.expenseId
         }
     },
     mounted() {
@@ -102,6 +133,10 @@ export default {
         }
         for (let a in this.all_currency) {
             this.all_currency[a] = Object.keys(currencies).filter(key => key.startsWith(a));
+        }
+
+        if (this.expense_id != null) {
+            this.getExpenseDetail()
         }
     },
     methods: {
@@ -145,6 +180,7 @@ export default {
             localStorage.setItem('currency', currency)
         },
         saveExpense() {
+            this.loading.save = true
             const fb = firebase()
             const auth = fb.getAuth()
             let user = auth.currentUser
@@ -158,12 +194,47 @@ export default {
                 userId: expense.userId
             })
                 .then((docRef) => {
+                    this.loading.save = false
                     // console.log("Document written with ID: ", docRef.id);
-                    this.$emit('closeExpense', false)
+                    setTimeout(() => {
+                        this.$emit('closeExpense', false)
+                    }, 300);
                 })
                 .catch((error) => {
+                    this.loading.save = false
                     console.error("Error adding document: ", error);
                 });
+        },
+        getExpenseDetail() {
+            const fb = firebase()
+            const ref = doc(fb.db, 'expenses', this.expense_id)
+            onSnapshot(ref, (doc) => {
+                if (doc.exists()) {
+                    // console.log("Document data:", doc.data());
+                    const data = doc.data()
+                    this.selectedDate = data.date
+                    this.expenseCategory = data.category
+                    this.currency = data.currency
+                    this.expenseAmount = data.amount
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            });
+        },
+        deleteExpense(id: any) {
+            this.loading.delete = true
+            const fb = firebase()
+            const ref = doc(fb.db, 'expenses', id)
+            deleteDoc(ref).then(() => {
+                this.loading.delete = false
+                setTimeout(() => {
+                    this.$emit('closeExpense', false)
+                }, 300);
+            }).catch((error: any) => {
+                this.loading.delete = false
+                console.error("Error removing document: ", error);
+            });
         }
     }
 }

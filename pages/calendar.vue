@@ -4,7 +4,8 @@
             enter-to-class="transform translate-y-0" leave-active-class="transition duration-500 ease-out"
             leave-from-class="transform translate-y-0" leave-to-class="transform translate-y-full" :appear="true"
             :show="expenseShow">
-            <ExpenseComp v-if="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime" />
+            <ExpenseComp v-if="expenseShow" @closeExpense="getReturnCheck" :date="selectedDateTime"
+                :expenseId="expenseId" />
         </transition>
         <div class="mx-5">
             <div class="py-10 flex justify-between items-center">
@@ -26,11 +27,7 @@
 
                 <div class="overflow-y-auto max-h-96 scroll-smooth">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
-                        v-for="e in expenseList" :key="e">
-                        <div class=" absolute w-full h-full -mx-3 -my-5" draggable="true" @touchstart="dragOn" :id="e.id"
-                            @dragstart="dragOn" @dragend="dragOff" @touchmove="dragMethod($event)"
-                            @mousemove="dragMethod($event)">
-                        </div>
+                        v-for="e in expenseList" :key="e" @click="viewExpense(e)">
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -69,7 +66,8 @@ export default {
         dummies: [] as any | null,
         expenseShow: false as boolean | null,
         expenseList: [] as any | null,
-        isDragged: false as boolean | null
+        isDragged: false as boolean | null,
+        expenseId: null as any | null,
     }),
     mounted() {
         this.fb = firebase()
@@ -101,6 +99,7 @@ export default {
         },
         showExpense() {
             this.expenseShow = true
+            this.expenseId = null
             // change date format to YYYY-MM-DD
             // this.selectedDateTime = new Date(this.selectedDateTime).toISOString().split('T')[0]
             document.body.classList.add('overflow-hidden')
@@ -126,27 +125,11 @@ export default {
                 });
             }
         },
-        dragOn(event: any) {
-            useDrag().setDragged(true)
-            console.log("dragOn", useDrag().getDragged(), event)
-            this.isDragged = useDrag().getDragged()
-            // event.dataTransfer.setData("text/plain", event.target.id)
-        },
-        dragOff(event: any) {
-            // this.dragMethod(event)
-            useDrag().setDragged(false)
-            console.log("dragoff", useDrag().getDragged())
-            this.isDragged = useDrag().getDragged()
-            // event.dataTransfer.setData("text/plain", event.target.id);
-        },
-        dragMethod(event: any) {
-            // if (this.isDragged) {
-            //     // event.preventDefault();
-            //     const data = event.dataTransfer.getData("text/plain");
-            //     const element = document.getElementById(data);
-            //     // event.target.appendChild(element);
-            //     console.log(event.target, data)
-            // }
+        viewExpense(e: any) {
+            console.log("expense: ", e)
+            this.expenseShow = true
+            this.expenseId = e.id
+            document.body.classList.add('overflow-hidden')
         }
     }
 }
