@@ -6,7 +6,8 @@
         </div>
         <div class="mt-5 flex justify-between place-items-end text-white dark:text-zinc-600">
             <div v-for="i, k, u in loopDate" class=" text-center">
-                <div class="w-3.5 bg-zinc-600 rounded-t-3xl mx-auto" :style="`height: ` + ((i / data.total) * 100) + `px`">
+                <div class="w-3.5 bg-zinc-500 dark:bg-zinc-700 rounded-t-3xl mx-auto"
+                    :style="`height: ` + ((i / data.total) * 100) + `px`">
                 </div>
                 <span class="text-xs">{{ dayByWeek.find((e) => e.value == u)?.day }}</span>
             </div>

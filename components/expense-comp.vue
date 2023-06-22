@@ -20,7 +20,7 @@
                     <div class="w-1/5 text-center" v-if="Object.keys(all_currency).length > 0">
                         <select
                             class="px-4 py-2 text-white bg-zinc-600 rounded-full outline-none w-full appearance-none text-center"
-                            v-model="currency">
+                            v-model="currency" @change="changeCurrency(currency)">
                             <optgroup v-for="c in Object.keys(all_currency)" :key="c" :label="c">
                                 <option v-for="cc in all_currency[c]" :value="cc">{{ cc }}</option>
                             </optgroup>
