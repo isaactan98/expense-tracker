@@ -5,7 +5,7 @@
             <title>Home</title>
         </Head>
         <div class="mx-5">
-            <div class="py-10">
+            <div class="pt-10 pb-5">
                 <h1 class="font-bold text-xl">Home</h1>
             </div>
             <div class="grid place-content-center my-3">

@@ -1,5 +1,5 @@
 <template>
-    <div class="sticky bottom-0 z-10">
+    <div class="fixed w-full bottom-0 z-10">
         <div class="flex justify-around items-center bg-white dark:bg-zinc-900 px-2 py-3 rounded-t-3xl shadow-lg">
             <div class="flex flex-col items-center justify-center">
                 <a href="/" class="p-3">

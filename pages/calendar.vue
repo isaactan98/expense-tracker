@@ -8,7 +8,7 @@
                 :expenseId="expenseId" />
         </transition>
         <div class="mx-5">
-            <div class="py-10 flex justify-between items-center">
+            <div class="pt-10 pb-5 flex justify-between items-center">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Calendar</h1>
                 <button class="p-1" @click="showExpense">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -25,7 +25,7 @@
                     {{ selectedDateTime }}
                 </div>
 
-                <div class="overflow-y-auto max-h-96 scroll-smooth">
+                <div class="overflow-y-auto max-h-64 scroll-smooth">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
                         v-for="e in expenseList" :key="e" @click="viewExpense(e)">
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
@@ -44,14 +44,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="my-3 w-full -mx-5 border border-red-400 bg-red-500 bg-opacity-20 p-3 rounded-lg absolute bottom-12 z-50 "
-                :class="isDragged ? 'block' : 'hidden'" id="deleteArea">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-8 h-8 text-red-600 mx-auto" id="">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
             </div>
         </div>
     </div>

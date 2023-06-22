@@ -1,10 +1,10 @@
 <template>
     <div class="min-h-screen container text-gray-500 dark:text-white">
         <div class="grid gap-3 mx-5" v-if="user">
-            <div class="py-10">
+            <div class="pt-10 pb-5">
                 <h1 class="font-bold text-xl text-gray-600 dark:text-white">Profile</h1>
             </div>
-            <div class="bg-white dark:bg-slate-800 grid grid-cols-3 gap-5 p-5 place-content-center">
+            <div class="bg-white dark:bg-zinc-800 grid grid-cols-3 gap-5 p-5 place-content-center rounded-t-xl">
                 <div class="w-28 h-28 justify-center items-center">
                     <img :src="user.photoURL" alt="" class="rounded-full" referrerpolicy="no-referrer">
                 </div>
@@ -23,8 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div></div>
-            <div class="bg-white dark:bg-slate-800 flex gap-5 p-5">
+            <div class="bg-white dark:bg-zinc-800 flex gap-5 p-5 rounded-b-xl">
                 <button class="flex items-center gap-3" @click="logout()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 text-red-500">
