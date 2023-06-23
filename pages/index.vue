@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { collection, where, query, getDocs, onSnapshot } from 'firebase/firestore'
+import { collection, where, query, getDocs, onSnapshot, orderBy } from 'firebase/firestore'
 export default {
     head() {
         return {
@@ -181,7 +181,7 @@ export default {
             const user = await auth.currentUser
             const ref = collection(this.fb.db, 'expenses')
             if (notNull(user)) {
-                const q = query(ref, where('date', '>=', startDateFormat), where('date', '<', endDateFormat), where('userId', '==', userId))
+                const q = query(ref, where('date', '>=', startDateFormat), where('date', '<', endDateFormat), where('userId', '==', userId), orderBy('date', 'desc'))
                 onSnapshot(q, (querySnapshot) => {
                     this.expenseList = []
                     querySnapshot.forEach((doc) => {
