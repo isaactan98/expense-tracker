@@ -19,7 +19,7 @@
                 <div class="flex">
                     <p class="text-gray-500 dark:text-gray-400">Recent</p>
                 </div>
-                <div class="overflow-y-auto max-h-64 scroll-smooth">
+                <div class="overflow-y-auto max-h-64 scroll-smooth" v-if="!loading.recent">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
                         v-for="e in expenseList" :key="e">
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
@@ -36,6 +36,11 @@
                                 <p class="text-zinc-400 text-xs">{{ e.date }}</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="overflow-y-auto max-h-64 scroll-smooth" v-if="loading.recent">
+                    <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-8 my-5 shadow-md animate-pulse dark:text-white relative"
+                        v-for="e in 5" :key="e">
                     </div>
                 </div>
             </div>
@@ -62,7 +67,8 @@ export default {
         },
         loading: {
             monthly: true,
-            weekly: true
+            weekly: true,
+            recent: true,
         }
     }),
     async mounted() {
@@ -180,16 +186,24 @@ export default {
             const auth = await this.fb.getAuth()
             const user = await auth.currentUser
             const ref = collection(this.fb.db, 'expenses')
+
+            let processDoc = 0
+
             if (notNull(user)) {
                 const q = query(ref, where('date', '>=', startDateFormat), where('date', '<', endDateFormat), where('userId', '==', userId), orderBy('date', 'desc'))
                 onSnapshot(q, (querySnapshot) => {
                     this.expenseList = []
                     querySnapshot.forEach((doc) => {
+                        processDoc++
                         // console.log(doc.id, " => ", doc.data());
                         doc.data().category = categoryList.find((c: any) => c.id == doc.data().category)?.name
                         this.expenseList.push({ ...doc.data(), id: doc.id })
                     });
+                    if (processDoc == querySnapshot.docs.length) {
+                        this.loading.recent = false
+                    }
                 });
+
             }
         },
     }
