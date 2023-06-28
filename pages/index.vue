@@ -19,7 +19,7 @@
                 <div class="flex">
                     <p class="text-gray-500 dark:text-gray-400">Recent</p>
                 </div>
-                <div class="overflow-y-auto max-h-64 scroll-smooth" v-if="!loading.recent">
+                <div class="overflow-y-auto h-24 scroll-smooth" v-if="!loading.recent">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white relative"
                         v-for="e in expenseList" :key="e">
                         <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="overflow-y-auto max-h-64 scroll-smooth" v-if="loading.recent">
+                <div class="overflow-y-auto scroll-smooth" v-if="loading.recent">
                     <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-8 my-5 shadow-md animate-pulse dark:text-white relative"
                         v-for="e in 5" :key="e">
                     </div>

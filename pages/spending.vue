@@ -32,7 +32,7 @@
                 <h1 class="font-bold text-gray-600 dark:text-white">Recent Transaction</h1>
             </div>
 
-            <div class="overflow-y-auto max-h-64 scroll-smooth">
+            <div class="overflow-y-auto h-24 scroll-smooth">
                 <div class="flex w-full gap-5 bg-white dark:bg-zinc-800 rounded-xl p-3 my-5 shadow-md dark:text-white"
                     v-for="d in dummies" :key="d">
                     <div class="w-2/12 grid place-content-center bg-zinc-300 dark:bg-zinc-600 rounded-xl">

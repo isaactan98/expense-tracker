@@ -16,7 +16,7 @@
                 </svg>
             </button>
         </div>
-        <div class="calendar-body p-4">
+        <div class="calendar-body p-3">
             <div class="calendar-row">
                 <div class="calendar-cell">
                     <div class="calendar-date text-center py-2 rounded-full dark:text-white">
