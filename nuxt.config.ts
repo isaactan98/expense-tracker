@@ -4,7 +4,15 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Expense Tracker",
-      link: [{ rel: "icon", type: "image/x-icon", href: "/icon.png" }],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/icon.png" },
+        { rel: "manifest", href: "/manifest.json" },
+      ],
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "theme-color", content: "#212121" },
+      ],
     },
   },
   postcss: {
