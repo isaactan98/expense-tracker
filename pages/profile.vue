@@ -81,7 +81,9 @@ export default {
     methods: {
         async loginWithGoogle() {
             const auth = this.fb.getAuth()
-            if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+            console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
+            let isPWA = window.matchMedia('(display-mode: standalone)').matches
+            if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) || isPWA) {
                 signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
                     console.log(result)
                     // this.user = result.user
