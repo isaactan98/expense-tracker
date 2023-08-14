@@ -84,7 +84,7 @@ export default {
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
             alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
             let isPWA = window.matchMedia('(display-mode: standalone)').matches
-            if (!isPWA) {
+            if (isPWA) {
                 alert("signin with redirect")
                 signInWithRedirect(auth, new GoogleAuthProvider())
             }
