@@ -110,7 +110,7 @@ export default {
                 console.log("testFirebaseUi")
                 var uiConfig = {
                     signInSuccessUrl: 'https://expense-t.vercel.app/profile',
-                    signInFlow: 'popup',
+                    // signInFlow: 'popup',
                     signInOptions: [
                         // Leave the lines as is for the providers you want to offer your users.
                         new GoogleAuthProvider().providerId
