@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import * as firebaseui from 'firebaseui'
 
 export const firebase = () => {
   const config = useRuntimeConfig();
@@ -22,7 +23,7 @@ export const firebase = () => {
   return { app, analytics, getAuth, db };
 };
 
-export const firebaseUi = () => {
-  const req = require("firebaseui");
-  return new req.auth.AuthUI(firebase().getAuth());
+export const fireUI = () => {
+  // const req = firebaseui
+  return new firebaseui.auth.AuthUI(firebase().getAuth());
 }
