@@ -21,3 +21,8 @@ export const firebase = () => {
   const db = getFirestore(app);
   return { app, analytics, getAuth, db };
 };
+
+export const firebaseUi = () => {
+  const req = require("firebaseui");
+  return new req.auth.AuthUI(firebase().getAuth());
+}

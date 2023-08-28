@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "firebase": "^9.21.0",
+    "firebaseui": "^6.1.0",
     "lottie-web": "^5.11.0"
   }
 }

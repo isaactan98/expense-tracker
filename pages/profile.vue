@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { signInWithPopup, signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
 export default {
     data: () => ({
         user: null as any | null,
@@ -70,6 +70,8 @@ export default {
     mounted() {
         this.fb = firebase()
         const auth = this.fb.getAuth()
+
+        this.getFromRedirectLogin()
 
         auth.onAuthStateChanged((user: any) => {
             if (user) {
@@ -82,10 +84,10 @@ export default {
         async loginWithGoogle() {
             const auth = this.fb.getAuth()
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
-            alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
+            // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
             let isPWA = window.matchMedia('(display-mode: standalone)').matches
             if (!isPWA && (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i))) {
-                alert("signin with pop up")
+                // alert("signin with pop up")
                 signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
                     console.log(result)
                     // this.user = result.user
@@ -95,8 +97,11 @@ export default {
                     // alert(error.message)
                 });
             } else {
-                alert("signin with redirect")
-                signInWithRedirect(auth, new GoogleAuthProvider())
+                // alert("signin with redirect")
+                signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+                    console.log("res", res)
+                    getRedirectResult(auth)
+                })
             }
         },
         async logout() {
@@ -111,6 +116,10 @@ export default {
         },
         dateTime(date: any) {
             return new Date(date).toLocaleString()
+        },
+        getFromRedirectLogin() {
+            const auth = this.fb.getAuth()
+            getRedirectResult(auth);
         }
     }
 }
