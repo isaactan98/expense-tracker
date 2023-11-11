@@ -65,6 +65,8 @@ export default {
     },
     methods: {
         async loginWithGoogle() {
+            alert("loginWithGoogle")
+            alert("url:: " + window.location.href)
             const auth = this.fb.getAuth()
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
             // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
@@ -72,7 +74,10 @@ export default {
             signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
                 console.log("res", res)
                 getRedirectResult(auth)
-            })
+            }).catch((error: any) => {
+                console.log(error)
+                alert(error.message)
+            });
         },
         async logout() {
             const auth = this.fb.getAuth()
