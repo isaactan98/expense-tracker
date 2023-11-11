@@ -36,7 +36,8 @@
         </div>
         <div class="grid place-content-center min-h-screen" v-if="!user">
             <div class="p-10 rounded-xl bg-amber-50 backdrop-blur-xl bg-opacity-20 shadow-lg">
-                <div id="firebaseui-auth-container"></div>
+                <button @click="loginWithGoogle()" class="py-2 px-3 rounded-lg bg-zinc-500 bg-opacity-40">
+                    Login with Google</button>
             </div>
 
         </div>
@@ -51,16 +52,14 @@ export default {
         user: null as any | null,
         fb: null as any | null,
     }),
-    mounted() {
+    async mounted() {
         this.fb = firebase()
         const auth = this.fb.getAuth()
-
+        await getRedirectResult(auth)
         auth.onAuthStateChanged((user: any) => {
+            console.log(user)
             if (user) {
-                console.log(user)
                 this.user = user
-            } else {
-                this.testFirebaseUi()
             }
         }, 3000);
     },
@@ -70,23 +69,10 @@ export default {
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
             // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
             let isPWA = window.matchMedia('(display-mode: standalone)').matches
-            if (!isPWA && (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i))) {
-                // alert("signin with pop up")
-                signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
-                    console.log(result)
-                    // this.user = result.user
-                    window.location.reload()
-                }).catch((error) => {
-                    console.log(error)
-                    // alert(error.message)
-                });
-            } else {
-                // alert("signin with redirect")
-                signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
-                    console.log("res", res)
-                    getRedirectResult(auth)
-                })
-            }
+            signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+                console.log("res", res)
+                getRedirectResult(auth)
+            })
         },
         async logout() {
             const auth = this.fb.getAuth()
