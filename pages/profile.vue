@@ -55,7 +55,15 @@ export default {
     async mounted() {
         this.fb = firebase()
         const auth = this.fb.getAuth()
-        await getRedirectResult(auth)
+        await getRedirectResult(auth).then((result) => {
+            alert("result : " + result)
+            if (result?.user) {
+                this.user = result.user
+            }
+        }).catch((error: any) => {
+            console.log(error)
+            alert(error.message)
+        });
         auth.onAuthStateChanged((user: any) => {
             console.log(user)
             if (user) {
