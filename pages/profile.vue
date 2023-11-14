@@ -79,9 +79,17 @@ export default {
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
             // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
             let isPWA = window.matchMedia('(display-mode: standalone)').matches
-            signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+            // signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+            //     console.log("res", res)
+            //     getRedirectResult(auth)
+            // }).catch((error: any) => {
+            //     console.log(error)
+            //     alert(error.message)
+            // });
+            signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
                 console.log("res", res)
-                getRedirectResult(auth)
+                this.user = res.user
+                // getRedirectResult(auth)
             }).catch((error: any) => {
                 console.log(error)
                 alert(error.message)
@@ -115,7 +123,7 @@ export default {
                         new GoogleAuthProvider().providerId
                     ],
                 };
-                fireUI().start('#firebaseui-auth-container', uiConfig);
+                // fireUI().start('#firebaseui-auth-container', uiConfig);
             }
         }
     }
