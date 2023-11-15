@@ -45,7 +45,6 @@
 </template>
 
 <script lang="ts">
-import 'firebaseui/dist/firebaseui.css'
 import { signInWithPopup, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
 export default {
     data: () => ({
@@ -79,21 +78,21 @@ export default {
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
             // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
             let isPWA = window.matchMedia('(display-mode: standalone)').matches
-            // signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
-            //     console.log("res", res)
-            //     getRedirectResult(auth)
-            // }).catch((error: any) => {
-            //     console.log(error)
-            //     alert(error.message)
-            // });
-            signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
+            signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
                 console.log("res", res)
-                this.user = res.user
-                // getRedirectResult(auth)
+                getRedirectResult(auth)
             }).catch((error: any) => {
                 console.log(error)
                 alert(error.message)
             });
+            // signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
+            //     console.log("res", res)
+            //     this.user = res.user
+            //     // getRedirectResult(auth)
+            // }).catch((error: any) => {
+            //     console.log(error)
+            //     alert(error.message)
+            // });
         },
         async logout() {
             const auth = this.fb.getAuth()
@@ -112,20 +111,6 @@ export default {
             const auth = this.fb.getAuth()
             getRedirectResult(auth);
         },
-        testFirebaseUi() {
-            if (process.client) {
-                console.log("testFirebaseUi")
-                var uiConfig = {
-                    signInSuccessUrl: 'https://expense-t.vercel.app/profile',
-                    // signInFlow: 'popup',
-                    signInOptions: [
-                        // Leave the lines as is for the providers you want to offer your users.
-                        new GoogleAuthProvider().providerId
-                    ],
-                };
-                // fireUI().start('#firebaseui-auth-container', uiConfig);
-            }
-        }
     }
 }
 </script>
