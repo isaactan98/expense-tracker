@@ -54,21 +54,12 @@ export default {
     async mounted() {
         this.fb = firebase()
         const auth = this.fb.getAuth()
-        await getRedirectResult(auth).then((result) => {
-            alert("result : " + result)
-            if (result?.user) {
-                this.user = result.user
-            }
-        }).catch((error: any) => {
-            console.log(error)
-            alert(error.message)
-        });
         auth.onAuthStateChanged((user: any) => {
             console.log(user)
             if (user) {
                 this.user = user
             }
-        }, 3000);
+        });
     },
     methods: {
         async loginWithGoogle() {
@@ -85,18 +76,9 @@ export default {
             //     console.log(error)
             //     alert(error.message)
             // });
-            signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
-                console.log("res", res)
-                const credential = GoogleAuthProvider.credentialFromResult(res);
-                const token = credential?.accessToken;
-                console.warn("credential:: ", credential)
-                console.warn("token:: ", token)
-                this.user = res.user
-            }).catch((error: any) => {
-                console.log(error)
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                alert(error.message)
-            });
+            const userCred = await signInWithPopup(auth, new GoogleAuthProvider());
+            console.warn("userCred", userCred)
+            // const userCred = await signInWithCredential(auth, GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token));
         },
         async logout() {
             const auth = this.fb.getAuth()
