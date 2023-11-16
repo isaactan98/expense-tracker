@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { signInWithPopup, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, signInWithCredential, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
 export default {
     data: () => ({
         user: null as any | null,
@@ -87,10 +87,14 @@ export default {
             // });
             signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
                 console.log("res", res)
+                const credential = GoogleAuthProvider.credentialFromResult(res);
+                const token = credential?.accessToken;
+                console.warn("credential:: ", credential)
+                console.warn("token:: ", token)
                 this.user = res.user
-                getRedirectResult(auth)
             }).catch((error: any) => {
                 console.log(error)
+                const credential = GoogleAuthProvider.credentialFromError(error);
                 alert(error.message)
             });
         },
