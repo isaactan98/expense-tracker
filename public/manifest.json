@@ -6,7 +6,7 @@
   "theme_color": "#212121",
   "background_color": "#212121",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "icons": [
     {
       "src": "/icon144.png",
