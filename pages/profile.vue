@@ -83,6 +83,9 @@ export default {
                 console.warn("credential:: ", credential)
                 console.warn("token:: ", token)
                 this.user = res.user
+                signInWithCredential(auth, GoogleAuthProvider.credential(credential?.idToken)).then((r) => {
+                    console.warn("signInWithCredential ", r)
+                })
             }).catch((error: any) => {
                 console.log(error)
                 const credential = GoogleAuthProvider.credentialFromError(error);
