@@ -76,9 +76,19 @@ export default {
             //     console.log(error)
             //     alert(error.message)
             // });
-            const userCred = await signInWithPopup(auth, new GoogleAuthProvider());
-            console.warn("userCred", userCred)
-            // const userCred = await signInWithCredential(auth, GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token));
+            await signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
+                console.log("res", res)
+                const credential = GoogleAuthProvider.credentialFromResult(res);
+                const token = credential?.accessToken;
+                console.warn("credential:: ", credential)
+                console.warn("token:: ", token)
+                this.user = res.user
+            }).catch((error: any) => {
+                console.log(error)
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                alert(error.message)
+            });
+
         },
         async logout() {
             const auth = this.fb.getAuth()
