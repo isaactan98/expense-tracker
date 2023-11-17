@@ -60,6 +60,15 @@ export default {
                 this.user = user
             }
         });
+        await getRedirectResult(auth).then((result) => {
+            console.warn("getRedirectResult", result)
+            if (result?.user) {
+                this.user = result.user
+            }
+        }).catch((error: any) => {
+            console.log(error)
+            alert(error.message)
+        });
     },
     methods: {
         async loginWithGoogle() {
@@ -72,9 +81,8 @@ export default {
             console.warn("is PWA:: ", window.matchMedia('(display-mode: fullscreen)').matches);
             alert("is PWA:: " + window.matchMedia('(display-mode: fullscreen)').matches)
             if (isPwa) {
-                await signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+                await signInWithRedirect(auth, provider).then((res) => {
                     console.warn("res", res)
-                    getRedirectResult(auth)
                 }).catch((error: any) => {
                     console.log(error)
                     alert(error.message)
