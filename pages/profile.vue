@@ -63,7 +63,6 @@ export default {
     },
     methods: {
         async loginWithGoogle() {
-            alert("loginWithGoogle")
             alert("url:: " + window.location.href)
             const auth = this.fb.getAuth()
             // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
@@ -89,6 +88,7 @@ export default {
             }).catch((error: any) => {
                 console.log(error)
                 const credential = GoogleAuthProvider.credentialFromError(error);
+                console.error("credential:: ", credential)
                 alert(error.message)
             });
 
