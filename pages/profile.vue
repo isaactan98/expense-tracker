@@ -68,31 +68,36 @@ export default {
             provider.setCustomParameters({
                 prompt: 'select_account'
             });
-            // console.warn("is PWA:: ", window.matchMedia('(display-mode: standalone)').matches);
-            // alert("is PWA:: " + window.matchMedia('(display-mode: standalone)').matches)
-            // signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
-            //     console.log("res", res)
-            //     getRedirectResult(auth)
-            // }).catch((error: any) => {
-            //     console.log(error)
-            //     alert(error.message)
-            // });
-            await signInWithPopup(auth, provider).then((res) => {
-                console.log("res", res)
-                const credential = GoogleAuthProvider.credentialFromResult(res);
-                const token = credential?.accessToken;
-                console.warn("credential:: ", credential)
-                console.warn("token:: ", token)
-                this.user = res.user
-                signInWithCredential(auth, GoogleAuthProvider.credential(credential?.idToken)).then((r) => {
-                    console.warn("signInWithCredential ", r)
-                })
-            }).catch((error: any) => {
-                console.log(error)
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                console.error("credential:: ", credential)
-                alert(error.message)
-            });
+            const isPwa = window.matchMedia('(display-mode: fullscreen)').matches
+            console.warn("is PWA:: ", window.matchMedia('(display-mode: fullscreen)').matches);
+            alert("is PWA:: " + window.matchMedia('(display-mode: fullscreen)').matches)
+            if (isPwa) {
+                await signInWithRedirect(auth, new GoogleAuthProvider()).then((res) => {
+                    console.warn("res", res)
+                    getRedirectResult(auth)
+                }).catch((error: any) => {
+                    console.log(error)
+                    alert(error.message)
+                });
+            }
+            else {
+                await signInWithPopup(auth, provider).then((res) => {
+                    console.log("res", res)
+                    const credential = GoogleAuthProvider.credentialFromResult(res);
+                    const token = credential?.accessToken;
+                    console.warn("credential:: ", credential)
+                    console.warn("token:: ", token)
+                    this.user = res.user
+                    signInWithCredential(auth, GoogleAuthProvider.credential(credential?.idToken)).then((r) => {
+                        console.warn("signInWithCredential ", r)
+                    })
+                }).catch((error: any) => {
+                    console.log(error)
+                    const credential = GoogleAuthProvider.credentialFromError(error);
+                    console.error("credential:: ", credential)
+                    alert(error.message)
+                });
+            }
 
         },
         async logout() {
